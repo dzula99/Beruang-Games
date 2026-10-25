@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beruang.fun - RPG Game Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #080c14;
+            --card-bg: rgba(20, 27, 45, 0.75);
+            --card-border: rgba(99, 102, 241, 0.2);
+            --accent-color: #6366f1;
+            --accent-hover: #4f46e5;
+            --accent-glow: rgba(99, 102, 241, 0.5);
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 10% 10%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+                radial-gradient(at 90% 90%, rgba(139, 92, 246, 0.12) 0px, transparent 50%),
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+            background-attachment: fixed;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.9) 0%, rgba(8, 12, 20, 0.8) 100%);
+            backdrop-filter: blur(12px);
+            padding: 3.5rem 1.5rem 2.5rem 1.5rem;
+            text-align: center;
+            border-bottom: 1px solid var(--card-border);
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .lang-picker {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(15, 23, 42, 0.8);
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+            border: 1px solid var(--card-border);
+        }
+
+        .lang-picker select {
+            background: transparent;
+            color: var(--text-color);
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .lang-picker select option {
+            background-color: #0f172a;
+            color: var(--text-color);
+        }
+
+        .brand-badge {
+            display: inline-block;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.65rem;
+            background: rgba(99, 102, 241, 0.15);
+            color: #818cf8;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            margin-bottom: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        header h1.logo-title {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 2.5rem;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            text-shadow: 
+                3px 3px 0px #4f46e5,
+                6px 6px 0px #0f172a,
+                0 0 25px var(--accent-glow);
+            margin-bottom: 1rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            font-weight: 500;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Search Section */
+        .search-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .search-icon {
+            font-size: 1.3rem;
+            color: var(--accent-color);
+        }
+
+        .search-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.8rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 1.8rem;
+            background: var(--accent-color);
+            border-radius: 4px;
+            box-shadow: 0 0 12px var(--accent-color);
+        }
+
+        /* LAYOUT PERSEGI PANJANG DENGAN RASIO RPG MAKER */
+        .game-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .game-card:hover {
+            transform: translateX(8px);
+            border-color: rgba(99, 102, 241, 0.6);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 20px var(--accent-glow);
+        }
+
+        /* Menjaga proporsi asli RPG Maker 816x624 tanpa terpotong */
+        .game-card img {
+            width: 280px;
+            min-width: 280px;
+            aspect-ratio: 816 / 624;
+            object-fit: contain;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .game-card-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+
+        .game-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+            color: #ffffff;
+            line-height: 1.2;
+        }
+
+        .game-desc {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Container untuk menempatkan tombol di pojok kanan bawah */
+        .card-footer-action {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: auto;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 150px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.7rem 1.6rem;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+            box-shadow: 0 6px 20px var(--accent-glow);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            display: none;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 4rem;
+        }
+
+        .gallery-grid img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 816 / 624;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+            transition: all 0.3s ease;
+        }
+
+        .gallery-grid img:hover {
+            transform: scale(1.04);
+            border-color: var(--accent-color);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+        }
+
+        footer {
+            background: rgba(10, 15, 26, 0.95);
+            border-top: 1px solid var(--card-border);
+            padding: 3.5rem 1.5rem 2rem 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .footer-section h3 {
+            color: #ffffff;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .footer-section a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.2s;
+        }
+
+        .footer-section a:hover {
+            color: #818cf8;
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            header h1.logo-title {
+                font-size: 1.8rem;
+            }
+            .lang-picker {
+                position: static;
+                display: inline-flex;
+                margin-bottom: 1rem;
+            }
+            .game-card {
+                flex-direction: column;
+            }
+            .game-card img {
+                width: 100%;
+                min-width: 100%;
+            }
+            .card-footer-action {
+                justify-content: stretch;
+            }
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="lang-picker">
+            <span>🌐</span>
+            <select id="languageSelect" onchange="changeLanguage(this.value)">
+                <option value="en">English</option>
+                <option value="id">Bahasa Indonesia</option>
+                <option value="ja">日本語</option>
+                <option value="zh">中文</option>
+                <option value="es">Español</option>
+            </select>
+        </div>
+        <div>
+            <span class="brand-badge">🎮 RPG Maker Portal</span>
+            <h1 class="logo-title">Beruang.fun</h1>
+        </div>
+        <p id="header-subtitle">Explore rich worlds, witty dialogues, and fun RPG adventures! Click and play directly on the web—available on PC and mobile!</p>
+    </header>
+
+    <div class="container">
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" class="search-input" placeholder="Search game titles..." onkeyup="filterGames()">
+        </div>
+
+        <!-- Section Game Utama -->
+        <div class="section-header">
+            <h2 class="section-title" id="title-latest-games">Featured Games</h2>
+        </div>
+        
+        <div class="game-grid" id="gameGrid">
+            <!-- Game 1 -->
+            <div class="game-card" data-title="To be Special! : Party with Friends">
+                <img src="game-cover-1.png" alt="To be Special! : Party with Friends">
+                <div class="game-card-body">
+                    <div>
+                        <h3 class="game-title">To be Special! : Party with Friends</h3>
+                        <p class="game-desc" id="game1-desc">A fun-filled party RPG with friends, hilarious interactions, and lively exploration.</p>
+                    </div>
+                    <div class="card-footer-action">
+                        <a href="games/to-be-special/www/index.html" target="_blank" class="btn btn-play">Play Now</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Game 2 -->
+            <div class="game-card" data-title="Purr-haps Next Time">
+                <img src="game-cover-2.png" alt="Purr-haps Next Time">
+                <div class="game-card-body">
+                    <div>
+                        <h3 class="game-title">Purr-haps Next Time</h3>
+                        <p class="game-desc" id="game2-desc">A whimsical story-driven adventure featuring charming encounters and clever dialogues.</p>
+                    </div>
+                    <div class="card-footer-action">
+                        <a href="games/purr-haps-next-time/www/index.html" target="_blank" class="btn btn-play">Play Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game 3 -->
+            <div class="game-card" data-title="Station on My Screen">
+                <img src="game-cover-3.png" alt="Station on My Screen">
+                <div class="game-card-body">
+                    <div>
+                        <h3 class="game-title">Station on My Screen</h3>
+                        <p class="game-desc" id="game3-desc">An atmospheric mystery where secrets unravel across a strange broadcasting station.</p>
+                    </div>
+                    <div class="card-footer-action">
+                        <a href="games/station-on-my-screen/www/index.html" target="_blank" class="btn btn-play">Play Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game 4 -->
+            <div class="game-card" data-title="BEY-BREAD : Spin to Win!">
+                <img src="game-cover-4.png" alt="BEY-BREAD : Spin to Win!">
+                <div class="game-card-body">
+                    <div>
+                        <h3 class="game-title">BEY-BREAD : Spin to Win!</h3>
+                        <p class="game-desc" id="game4-desc">An energetic, quirky tournament game filled with spinning battles and tasty victory!</p>
+                    </div>
+                    <div class="card-footer-action">
+                        <a href="games/bey-bread/www/index.html" target="_blank" class="btn btn-play">Play Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="no-results" id="noResults">No games found matching your search.</div>
+        </div>
+
+        <!-- Section Galeri -->
+        <h2 class="section-title" id="title-gallery">Screenshots</h2>
+        <div class="gallery-grid">
+            <img src="screenshot-1.png" alt="Screenshot 1">
+            <img src="screenshot-2.png" alt="Screenshot 2">
+            <img src="screenshot-3.png" alt="Screenshot 3">
+            <img src="screenshot-4.png" alt="Screenshot 4">
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Beruang.fun</h3>
+                <p id="footer-about">An indie RPG development space dedicated to crafting immersive worlds, humor-filled storytelling, and memorable exploration experiences.</p>
+            </div>
+            <div class="footer-section">
+                <h3 id="footer-links-title">Official Store & Downloads</h3>
+                <p id="footer-itch-desc">Check out all games, updates, and devlogs on our official itch.io page:</p>
+                <p style="margin-top: 0.5rem;"><a href="https://beruang-tidur.itch.io" target="_blank">beruang-tidur.itch.io ↗</a></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p id="footer-copyright">&copy; 2026 Beruang.fun by @BeruangPixel. Built with RPG Maker.</p>
+        </div>
+    </footer>
+
+    <script>
+        const translations = {
+            en: {
+                headerSubtitle: "Explore rich worlds, witty dialogues, and fun RPG adventures! Click and play directly on the web—available on PC and mobile!",
+                searchPlaceholder: "Search game titles...",
+                titleLatestGames: "Featured Games",
+                game1Desc: "A fun-filled party RPG with friends, hilarious interactions, and lively exploration.",
+                game2Desc: "A whimsical story-driven adventure featuring charming encounters and clever dialogues.",
+                game3Desc: "An atmospheric mystery where secrets unravel across a strange broadcasting station.",
+                game4Desc: "An energetic, quirky tournament game filled with spinning battles and tasty victory!",
+                btnPlay: "Play Now",
+                titleGallery: "Screenshots",
+                noResults: "No games found matching your search.",
+                footerAbout: "An indie RPG development space dedicated to crafting immersive worlds, humor-filled storytelling, and memorable exploration experiences.",
+                footerLinksTitle: "Official Store & Downloads",
+                footerItchDesc: "Check out all games, updates, and devlogs on our official itch.io page:",
+                footerCopyright: "© 2026 Beruang.fun by @BeruangPixel. Built with RPG Maker."
+            },
+            id: {
+                headerSubtitle: "Jelajahi dunia unik, dialog penuh humor, dan petualangan RPG seru! Klik dan mainkan langsung di web—dapat dimainkan di PC dan HP!",
+                searchPlaceholder: "Cari judul game...",
+                titleLatestGames: "Game Pilihan",
+                game1Desc: "RPG pesta seru bersama teman-teman, penuh interaksi kocak dan eksplorasi seru.",
+                game2Desc: "Petualangan naratif yang menggemaskan dengan pertemuan unik dan dialog menarik.",
+                game3Desc: "Misteri beratmosfer di mana rahasia terungkap di stasiun penyiaran misterius.",
+                game4Desc: "Game turnamen penuh energi dan keunikan dengan pertarungan berputar menuju kemenangan!",
+                btnPlay: "Mainkan Sekarang",
+                titleGallery: "Tangkapan Layar",
+                noResults: "Tidak ada game yang cocok dengan pencarian Anda.",
+                footerAbout: "Ruang pengembangan game RPG indie yang berfokus pada dunia yang mendalam, cerita penuh humor, dan pengalaman eksplorasi yang berkesan.",
+                footerLinksTitle: "Toko Resmi & Unduhan",
+                footerItchDesc: "Lihat semua game, pembaruan, dan devlog di halaman resmi itch.io kami:",
+                footerCopyright: "© 2026 Beruang.fun oleh @BeruangPixel. Dibuat dengan RPG Maker."
+            },
+            ja: {
+                headerSubtitle: "ユニークな世界、楽しい会話、ワクワクするRPGの冒険へ！クリックしてWebで今すぐプレイ—PCとスマホ両方で遊べます！",
+                searchPlaceholder: "ゲームのタイトルを検索...",
+                titleLatestGames: "注目のゲーム",
+                game1Desc: "友達と楽しむパーティーRPG。面白い会話と賑やかな探索が満載！",
+                game2Desc: "魅力的な出会いと心温まる会話が楽しめるストーリー重視のアドベンチャー。",
+                game3Desc: "謎の放送局を mel de 展開する、雰囲気に満ちたミステリー探索。",
+                game4Desc: "回転バトルで勝利を目指す、エネルギッシュでユニークなトーナメントゲーム！",
+                btnPlay: "今すぐプレイ",
+                titleGallery: "スクリーンショット",
+                noResults: "一致するゲームが見つかりませんでした。",
+                footerAbout: "没入感のある世界観、ユーモア溢れるストーリー、そして記憶に残る探索体験を提供するインディーRPG開発スペース。",
+                footerLinksTitle: "公式ストア＆ダウンロード",
+                footerItchDesc: "公式itch.ioページでゲーム、アップデート、開発 memo をチェック：",
+                footerCopyright: "© 2026 Beruang.fun by @BeruangPixel. RPGツクールで制作。"
+            },
+            zh: {
+                headerSubtitle: "探索丰富的世界、幽默的对话与精彩的RPG冒险！点击即可在网页上直接游玩——支持PC与手机端！",
+                searchPlaceholder: "搜索游戏标题...",
+                titleLatestGames: "精选游戏",
+                game1Desc: "与朋友一起共度的欢快派对RPG，充满幽默互动与生动的探索。",
+                game2Desc: "包含迷人邂逅与巧妙对话的剧情导向冒险故事。",
+                game3Desc: "在神秘的广播电台揭开层层谜团的氛围感探索之旅。",
+                game4Desc: "充满活力的独特锦标赛游戏，包含旋转战斗与美味的胜利！",
+                btnPlay: "立即游玩",
+                titleGallery: "游戏截图",
+                noResults: "未找到符合您搜索的游戏。",
+                footerAbout: "致力于打造沉浸式世界、幽默剧情和难忘探索体验的独立RPG游戏工作室。",
+                footerLinksTitle: "官方商店与下载",
+                footerItchDesc: "在我们的官方 itch.io 页面查看所有游戏、更新和开发日志：",
+                footerCopyright: "© 2026 Beruang.fun by @BeruangPixel. 使用 RPG Maker 制作。"
+            },
+            es: {
+                headerSubtitle: "¡Explora mundos únicos, diálogos divertidos y grandes aventuras RPG! Haz clic y juega directamente en la web: ¡disponible para PC y móviles!",
+                searchPlaceholder: "Buscar títulos de juegos...",
+                titleLatestGames: "Juegos Destacados",
+                game1Desc: "Un divertido RPG de fiesta con amigos, interacciones graciosas y mucha exploración.",
+                game2Desc: "Una aventura narrativa encantadora repleta de encuentros únicos y diálogos ingeniosos.",
+                game3Desc: "Un misterio atmosfórico donde los secretos se revelan en una extraña estación de radio.",
+                game4Desc: "¡Un juego de torneo enérgico y extravagantemente lleno de batallas giratorias!",
+                btnPlay: "Jugar Ahora",
+                titleGallery: "Capturas de Pantalla",
+                noResults: "No se encontraron juegos que coincidan con tu búsqueda.",
+                footerAbout: "Un espacio de desarrollo de RPG indie dedicado a crear mundos envolventes, historias llenas de humor y experiencias de exploración memorables.",
+                footerLinksTitle: "Tienda Oficial y Descargas",
+                footerItchDesc: "Visita nuestra página oficial de itch.io para ver todos los juegos, actualizaciones y devlogs:",
+                footerCopyright: "© 2026 Beruang.fun por @BeruangPixel. Creado con RPG Maker."
+            }
+        };
+
+        function setLanguage(lang) {
+            const t = translations[lang] || translations.en;
+            
+            document.getElementById('header-subtitle').innerText = t.headerSubtitle;
+            document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+            document.getElementById('title-latest-games').innerText = t.titleLatestGames;
+            document.getElementById('game1-desc').innerText = t.game1Desc;
+            document.getElementById('game2-desc').innerText = t.game2Desc;
+            document.getElementById('game3-desc').innerText = t.game3Desc;
+            document.getElementById('game4-desc').innerText = t.game4Desc;
+            
+            document.querySelectorAll('.btn-play').forEach(btn => btn.innerText = t.btnPlay);
+            
+            document.getElementById('title-gallery').innerText = t.titleGallery;
+            document.getElementById('noResults').innerText = t.noResults;
+            document.getElementById('footer-about').innerText = t.footerAbout;
+            document.getElementById('footer-links-title').innerText = t.footerLinksTitle;
+            document.getElementById('footer-itch-desc').innerText = t.footerItchDesc;
+            document.getElementById('footer-copyright').innerText = t.footerCopyright;
+            
+            document.getElementById('languageSelect').value = lang in translations ? lang : 'en';
+        }
+
+        function filterGames() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.game-card');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title').toLowerCase();
+                if (title.includes(input)) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            const noResults = document.getElementById('noResults');
+            noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+        }
+
+        function detectUserLanguage() {
+            const userLang = (navigator.language || navigator.userLanguage).substring(0, 2);
+            if (translations[userLang]) {
+                setLanguage(userLang);
+            } else {
+                setLanguage('en');
+            }
+        }
+
+        function changeLanguage(lang) {
+            setLanguage(lang);
+        }
+
+        window.onload = detectUserLanguage;
+    </script>
+</body>
+</html>

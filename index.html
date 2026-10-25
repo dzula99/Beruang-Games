@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Beruang Games - Pixel & RPG Game Portal</title>
+    
+    <!-- FAVICON (GANTI 'favicon.png' DENGAN NAMA FILE GAMBARMU) -->
+    <link rel="icon" type="image/ico" href="favicon.ico">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=Plus+Jakarta+Sans:wght@600;800&display=swap" rel="stylesheet">
+
+    <!-- BASIC SEO META TAGS -->
+<meta name="description" content="Beruang Games - Indie RPG & pixel art game portal. Explore unique worlds, humorous stories, and play free browser RPG games directly on PC and mobile!">
+<meta name="keywords" content="Beruang Games, indie RPG, pixel art games, free browser games, RPG Maker, indie game developer, play browser games, HTML5 RPG">
+<meta name="author" content="billybones999 (@BeruangPixel)">
+<meta name="robots" content="index, follow">
+
+<!-- OPEN GRAPH (For sharing on Facebook, WhatsApp, Discord, LinkedIn) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://beruang-games.vercel.app/"> 
+<meta property="og:title" content="Beruang Games - Pixel & RPG Game Portal">
+<meta property="og:description" content="Explore unique and exciting indie RPG worlds. Click and play free browser games directly on PC and mobile!">
+<meta property="og:image" content="https://beruang-games.vercel.app/cover.png"> 
+<meta property="og:site_name" content="Beruang Games">
+
+<!-- TWITTER CARD (For sharing on Twitter/X) -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@BeruangPixel">
+<meta name="twitter:title" content="Beruang Games - Pixel & RPG Game Portal">
+<meta name="twitter:description" content="Explore unique and exciting indie RPG worlds. Click and play free browser games directly on PC and mobile!">
+<meta name="twitter:image" content="https://beruang-games.vercel.app/cover.png"> 
+
+<!-- CANONICAL LINK (Prevents duplicate content issues) -->
+<link rel="canonical" href="https://beruang-games.vercel.app/">
+
+    <style>
+        :root {
+            --bg-color: #0d0e15;
+            --panel-bg: #161822;
+            --accent-yellow: #ffcc00;
+            --accent-pink: #ff2a6d;
+            --accent-cyan: #05d9e8;
+            --accent-purple: #7928ca;
+            --kofi-color: #ff5e5b;
+            --text-color: #f8fafc;
+            --text-muted: #8a8fc1;
+            --border-pixel: 3px solid #000000;
+            --pixel-shadow: 5px 5px 0px #000000;
+            --pixel-shadow-hover: 8px 8px 0px #05d9e8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Rendering Pixel Art Tajam secara Global */
+        img, canvas {
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(#1e2235 15%, transparent 16%),
+                radial-gradient(#1e2235 15%, transparent 16%);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            color: var(--text-color);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            padding-bottom: 3rem;
+            line-height: 1.4;
+        }
+
+        /* NAVBAR / TOP BAR HEADER */
+        .top-bar {
+            max-width: 1100px;
+            margin: 1.5rem auto 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .brand-badge {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.7rem;
+            background: var(--accent-yellow);
+            color: #000;
+            padding: 0.5rem 0.8rem;
+            border: var(--border-pixel);
+            box-shadow: 3px 3px 0px #000;
+            text-transform: uppercase;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        /* KO-FI RETRO BUTTON */
+        .btn-kofi {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: var(--kofi-color);
+            color: #fff;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.65rem;
+            padding: 0.6rem 0.9rem;
+            text-decoration: none;
+            border: var(--border-pixel);
+            box-shadow: 3px 3px 0px #000;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .btn-kofi:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px #000;
+            background-color: #ff413d;
+        }
+
+        .lang-picker {
+            background: var(--panel-bg);
+            padding: 0.4rem 0.7rem;
+            border: var(--border-pixel);
+            box-shadow: 3px 3px 0px #000;
+        }
+
+        .lang-picker select {
+            background: transparent;
+            color: var(--text-color);
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 800;
+        }
+
+        .lang-picker select option {
+            background-color: var(--panel-bg);
+            color: var(--text-color);
+        }
+
+        /* HERO HEADER */
+        header {
+            text-align: center;
+            margin: 2rem auto 2.5rem auto;
+            padding: 0 1rem;
+        }
+
+        header h1.logo-title {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 3rem;
+            color: var(--accent-cyan);
+            text-shadow: 4px 4px 0px #ff2a6d, 8px 8px 0px #000;
+            margin-bottom: 1.2rem;
+            letter-spacing: -1px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-family: 'VT323', monospace;
+            font-size: 1.5rem;
+            max-width: 650px;
+            margin: 0 auto;
+            background: var(--panel-bg);
+            border: var(--border-pixel);
+            padding: 0.6rem 1rem;
+            box-shadow: var(--pixel-shadow);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* SEARCH BAR ARCADE STYLE */
+        .search-container {
+            background: var(--panel-bg);
+            border: var(--border-pixel);
+            box-shadow: var(--pixel-shadow);
+            padding: 0.8rem 1.2rem;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .search-icon {
+            font-size: 1.3rem;
+        }
+
+        .search-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--accent-yellow);
+            font-family: 'VT323', monospace;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .section-title {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .section-title::before {
+            content: '►';
+            color: var(--accent-pink);
+        }
+
+        /* GRID KATALOG KOTAK INTERAKTIF */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 4rem;
+        }
+
+        .game-card {
+            background: var(--panel-bg);
+            border: var(--border-pixel);
+            box-shadow: var(--pixel-shadow);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            position: relative;
+        }
+
+        .game-card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: var(--pixel-shadow-hover);
+            border-color: #fff;
+        }
+
+        .game-card-img-wrapper {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background-color: #000;
+            border-bottom: var(--border-pixel);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .game-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.2s ease;
+            image-rendering: auto;
+            image-rendering: smooth;
+        }
+
+        .game-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .game-card-body {
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+            gap: 1.2rem;
+        }
+
+        .game-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .game-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800;
+            font-size: 1.15rem;
+            color: #ffffff;
+            line-height: 1.3;
+        }
+
+        .game-desc {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            line-height: 1.4;
+        }
+
+        .game-card-footer {
+            display: flex;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        /* BUTTON PLAY ARCADE */
+        .btn-play {
+            width: 100%;
+            text-align: center;
+            background-color: var(--accent-pink);
+            color: #fff;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.65rem;
+            padding: 0.75rem 0.6rem;
+            text-decoration: none;
+            border: var(--border-pixel);
+            box-shadow: 2px 2px 0px #000;
+            transition: background-color 0.1s, transform 0.1s;
+        }
+
+        .btn-play:hover {
+            background-color: var(--accent-yellow);
+            color: #000;
+            transform: translate(-1px, -1px);
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            font-family: 'VT323', monospace;
+            font-size: 1.8rem;
+            color: var(--accent-pink);
+            display: none;
+            background: var(--panel-bg);
+            border: var(--border-pixel);
+        }
+
+        /* GALERI SCREENSHOT */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 4rem;
+        }
+
+        .gallery-grid img {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border: var(--border-pixel);
+            box-shadow: var(--pixel-shadow);
+            transition: transform 0.15s;
+            cursor: pointer;
+        }
+
+        .gallery-grid img:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: var(--pixel-shadow-hover);
+        }
+
+        /* LIGHTBOX MODAL (ZOOM SCREENSHOT) */
+        .lightbox-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(13, 14, 21, 0.92);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-modal.active {
+            display: flex;
+        }
+
+        .lightbox-content-wrapper {
+            position: relative;
+            max-width: 85%;
+            max-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 80vh;
+            border: 4px solid #fff;
+            box-shadow: 0px 0px 20px rgba(5, 217, 232, 0.5), 8px 8px 0px #000;
+            object-fit: contain;
+            background: #000;
+            image-rendering: auto;
+            image-rendering: smooth;
+            filter: contrast(102%) brightness(100%);
+        }
+
+        /* LIGHTBOX BUTTONS RETRO STYLE */
+        .lightbox-btn {
+            position: absolute;
+            background: var(--panel-bg);
+            color: var(--accent-yellow);
+            border: var(--border-pixel);
+            box-shadow: 4px 4px 0px #000;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 1.2rem;
+            padding: 0.8rem 1.1rem;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.1s, background-color 0.1s, color 0.1s;
+        }
+
+        .lightbox-btn:hover {
+            background-color: var(--accent-pink);
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        .lightbox-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #000;
+        }
+
+        .lightbox-close {
+            top: -2.5rem;
+            right: 0;
+            font-size: 0.9rem;
+            padding: 0.4rem 0.7rem;
+            background: var(--accent-pink);
+            color: #fff;
+        }
+
+        .lightbox-prev {
+            left: -3.5rem;
+        }
+
+        .lightbox-next {
+            right: -3.5rem;
+        }
+
+        /* FOOTER RETRO */
+        footer {
+            background: var(--panel-bg);
+            border: var(--border-pixel);
+            box-shadow: var(--pixel-shadow);
+            padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.9rem;
+            color: var(--accent-yellow);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .footer-section a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-weight: 800;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 2px dashed var(--text-muted);
+            color: var(--text-muted);
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+        }
+
+        /* OPTIMASI PONSEL (MOBILE RESPONSIVE) */
+        @media (max-width: 640px) {
+            .top-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .top-actions {
+                justify-content: space-between;
+                width: 100%;
+            }
+
+            header h1.logo-title {
+                font-size: 1.8rem;
+                text-shadow: 3px 3px 0px #ff2a6d, 5px 5px 0px #000;
+            }
+
+            header p {
+                font-size: 1.2rem;
+            }
+
+            .game-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 1rem;
+            }
+
+            .game-card-body {
+                padding: 0.8rem;
+            }
+
+            .game-title {
+                font-size: 0.95rem;
+            }
+
+            .game-desc {
+                font-size: 0.8rem;
+            }
+
+            .btn-play {
+                font-size: 0.6rem;
+                padding: 0.6rem 0.5rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.8rem;
+            }
+
+            .lightbox-prev {
+                left: 0.5rem;
+                top: 105%;
+            }
+
+            .lightbox-next {
+                right: 0.5rem;
+                top: 105%;
+            }
+
+            .lightbox-close {
+                top: -3rem;
+            }
+        }
+
+        /* Menyembunyikan gambar ke-6 dan seterusnya di halaman web */
+        .gallery-grid img:nth-child(n+6) {
+            display: none;
+        }
+
+	/* Floating Pixel Button */
+        .floating-pixel-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+
+        .floating-pixel-img {
+            width: 128px;
+            height: auto;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.3));
+            transition: transform 0.2s ease;
+        }
+
+        .floating-pixel-tooltip {
+            background-color: var(--accent-color);
+            color: white;
+            font-size: 0.85rem;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 12px;
+            margin-top: 4px;
+            opacity: 0;
+            transform: translateY(5px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            white-space: nowrap;
+            pointer-events: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .floating-pixel-btn:hover .floating-pixel-img {
+            transform: scale(1.1) translateY(-6px);
+        }
+
+        .floating-pixel-btn:hover .floating-pixel-tooltip {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+	<style>
+  .game-banner-container {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .game-banner {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1440 / 576;
+    object-fit: cover;
+    display: block;
+    border-radius: 8px; /* Opsional: membuat sudut gambar melengkung */
+  }
+</style>
+
+    </style>
+</head>
+<body>
+
+    <!-- TOP BAR DEKAT HEADER -->
+    <div class="top-bar">
+        <span class="brand-badge">👾 Pixel Portal</span>
+        <div class="top-actions">
+            <!-- KO-FI SUPPORT BUTTON -->
+            <a href="https://ko-fi.com/beruangtidur" target="_blank" class="btn-kofi">
+                ☕ Support Ko-fi
+            </a>
+            <div class="lang-picker">
+                <span>🌐</span>
+                <select id="languageSelect" onchange="changeLanguage(this.value)">
+                    <option value="en">EN</option>
+                    <option value="id">ID</option>
+                    <option value="ja">JA</option>
+                    <option value="zh">ZH</option>
+                    <option value="es">ES</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN HEADER -->
+    <header>
+        <h1 class="logo-title">Beruang Games</h1>
+
+    <header class="game-banner-container">
+    <img src="cover.png" alt="Banner Web Game" class="game-banner">
+    </header>
+
+        <p id="header-subtitle">Explore rich worlds, witty dialogues, and fun RPG adventures! Click and play directly on the web—available on PC and mobile!</p>
+    </header>
+
+    <div class="container">
+
+        <!-- SEARCH BAR -->
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" class="search-input" placeholder="Search game titles..." onkeyup="filterGames()">
+        </div>
+
+        <!-- SECTION GAME -->
+        <h2 class="section-title" id="title-latest-games">Featured Games</h2>
+        
+        <div class="game-grid" id="gameGrid">
+            <!-- Game 1 -->
+            <div class="game-card" data-title="To be Special! : Party with Friends" data-id="game-1">
+                <div class="game-card-img-wrapper">
+                    <img src="game-cover-1.png" alt="To be Special! : Party with Friends">
+                </div>
+                <div class="game-card-body">
+                    <div class="game-info">
+                        <h3 class="game-title">To be Special! : Party with Friends</h3>
+                        <p class="game-desc" id="game1-desc">A fun-filled party RPG with friends, hilarious interactions, and lively exploration.</p>
+                    </div>
+                    <div class="game-card-footer">
+                        <a href="games/to-be-special/www/index.html" target="_blank" class="btn-play btn-play-text">Play Now</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Game 2 -->
+            <div class="game-card" data-title="Purr-haps Next Time" data-id="game-2">
+                <div class="game-card-img-wrapper">
+                    <img src="game-cover-2.png" alt="Purr-haps Next Time">
+                </div>
+                <div class="game-card-body">
+                    <div class="game-info">
+                        <h3 class="game-title">Purr-haps Next Time</h3>
+                        <p class="game-desc" id="game2-desc">A whimsical story-driven adventure featuring charming encounters and clever dialogues.</p>
+                    </div>
+                    <div class="game-card-footer">
+                        <a href="games/purr-haps-next-time/www/index.html" target="_blank" class="btn-play btn-play-text">Play Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game 3 -->
+            <div class="game-card" data-title="Station on My Screen" data-id="game-3">
+                <div class="game-card-img-wrapper">
+                    <img src="game-cover-3.png" alt="Station on My Screen">
+                </div>
+                <div class="game-card-body">
+                    <div class="game-info">
+                        <h3 class="game-title">Station on My Screen</h3>
+                        <p class="game-desc" id="game3-desc">An atmospheric mystery where secrets unravel across a strange broadcasting station.</p>
+                    </div>
+                    <div class="game-card-footer">
+                        <a href="games/station-on-my-screen/www/index.html" target="_blank" class="btn-play btn-play-text">Play Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game 4 -->
+            <div class="game-card" data-title="BEY-BREAD : Spin to Win!" data-id="game-4">
+                <div class="game-card-img-wrapper">
+                    <img src="game-cover-4.png" alt="BEY-BREAD : Spin to Win!">
+                </div>
+                <div class="game-card-body">
+                    <div class="game-info">
+                        <h3 class="game-title">BEY-BREAD : Spin to Win!</h3>
+                        <p class="game-desc" id="game4-desc">An energetic, quirky tournament game filled with spinning battles and tasty victory!</p>
+                    </div>
+                    <div class="game-card-footer">
+                        <a href="games/bey-bread/www/index.html" target="_blank" class="btn-play btn-play-text">Play Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="no-results" id="noResults">GAME NOT FOUND // TRY ANOTHER SEARCH</div>
+        </div>
+
+        <!-- SECTION SCREENSHOTS -->
+        <h2 class="section-title" id="title-gallery">Screenshots</h2>
+        <div class="gallery-grid" id="galleryGrid">
+            <img src="screenshot/screenshot-1.png" alt="Screenshot 1" data-index="0" onclick="openLightbox(0)">
+            <img src="screenshot/screenshot-2.png" alt="Screenshot 2" data-index="1" onclick="openLightbox(1)">
+            <img src="screenshot/screenshot-3.png" alt="Screenshot 3" data-index="2" onclick="openLightbox(2)">
+            <img src="screenshot/screenshot-4.png" alt="Screenshot 4" data-index="3" onclick="openLightbox(3)">
+            <img src="screenshot/screenshot-5.png" alt="Screenshot 5" data-index="4" onclick="openLightbox(4)">
+            <img src="screenshot/screenshot-6.png" alt="Screenshot 6" data-index="5" onclick="openLightbox(5)">
+        </div>
+
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Beruang Games</h3>
+                    <p id="footer-about">An indie RPG & pixel art space dedicated to crafting immersive worlds, humor-filled storytelling, and memorable web experiences.</p>
+                </div>
+                <div class="footer-section">
+                    <h3 id="footer-links-title">Official Links</h3>
+                    <p id="footer-itch-desc">Support my work & download game builds on itch.io or Ko-fi:</p>
+                    <p style="margin-top: 0.6rem;">
+                        <a href="https://beruang-tidur.itch.io" target="_blank">beruang-tidur.itch.io ↗</a>
+                    </p>
+                    <p style="margin-top: 0.4rem;">
+                        <a href="https://ko-fi.com/beruangtidur" target="_blank" style="color: var(--kofi-color);">Support me on Ko-fi ☕ ↗</a>
+                    </p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p id="footer-copyright">&copy; 2026 Beruang Games by @BeruangPixel. Pixel Art & Web Developer.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- LIGHTBOX MODAL ELEMENT -->
+    <div class="lightbox-modal" id="lightboxModal" onclick="closeLightboxOnBg(event)">
+        <div class="lightbox-content-wrapper">
+            <button class="lightbox-btn lightbox-close" onclick="closeLightbox()">✖ ESC</button>
+            <button class="lightbox-btn lightbox-prev" onclick="changeImage(-1)">◄</button>
+            <img src="" alt="Zoomed Screenshot" id="lightboxImage" class="lightbox-img">
+            <button class="lightbox-btn lightbox-next" onclick="changeImage(1)">►</button>
+        </div>
+    </div>
+
+    <script>
+    const translations = {
+        en: {
+            headerSubtitle: "Explore rich worlds, witty dialogues, and fun RPG adventures! Click and play directly on the web—available on PC and mobile!",
+            searchPlaceholder: "Search game titles...",
+            titleLatestGames: "Featured Games",
+            game1Desc: "A fun-filled party RPG with friends, hilarious interactions, and lively exploration.",
+            game2Desc: "A whimsical story-driven adventure featuring charming encounters and clever dialogues.",
+            game3Desc: "An atmospheric mystery where secrets unravel across a strange broadcasting station.",
+            game4Desc: "An energetic, quirky tournament game filled with spinning battles of Bey-Bread!",
+            btnPlay: "Play",
+            titleGallery: "Screenshots",
+            noResults: "GAME NOT FOUND // TRY ANOTHER SEARCH",
+            footerAbout: "An indie RPG & pixel art space dedicated to crafting immersive worlds, humor-filled storytelling, and memorable web experiences.",
+            footerLinksTitle: "Official Links",
+            footerItchDesc: "Support my work & download game builds on itch.io or Ko-fi:",
+            footerCopyright: "© 2026 Beruang Games by @BeruangPixel. Pixel Art & Web Developer."
+        },
+        id: {
+            headerSubtitle: "Jelajahi dunia unik, dialog penuh humor, dan petualangan RPG seru! Klik dan mainkan langsung di web—dapat dimainkan di PC dan HP!",
+            searchPlaceholder: "Cari judul game...",
+            titleLatestGames: "Game Pilihan",
+            game1Desc: "RPG pesta seru bersama teman-teman, penuh interaksi kocak dan eksplorasi seru.",
+            game2Desc: "Petualangan naratif yang menggemaskan dengan pertemuan unik dan dialog menarik.",
+            game3Desc: "Misteri beratmosfer di mana rahasia terungkap di stasiun penyiaran misterius.",
+            game4Desc: "Sebuah game turnamen yang penuh energi dan unik, diwarnai dengan pertarungan gasing Bey-Bread yang berputar!",
+            btnPlay: "Mainkan",
+            titleGallery: "Tangkapan Layar",
+            noResults: "GAME TIDAK DITEMUKAN // COBA CARI LAIN",
+            footerAbout: "Ruang pengembangan game RPG indie & pixel art yang berfokus pada dunia yang mendalam, cerita penuh humor, dan pengalaman web yang berkesan.",
+            footerLinksTitle: "Tautan Resmi",
+            footerItchDesc: "Dukung karya saya & unduh versi game di itch.io atau Ko-fi:",
+            footerCopyright: "© 2026 Beruang Games oleh @BeruangPixel. Pengembang Pixel Art & Web."
+        },
+        ja: {
+            headerSubtitle: "ユニークな世界、楽しい会話、ワクワクするRPGの冒険へ！クリックしてWebで今すぐプレイ—PCとスマホ両方で遊べます！",
+            searchPlaceholder: "ゲームのタイトルを検索...",
+            titleLatestGames: "注目のゲーム",
+            game1Desc: "友達と楽しむパーティーRPG。面白い会話と賑やかな探索が満載！",
+            game2Desc: "魅力的な出会いと心温まる会話が楽しめるストーリー重視のアドベンチャー。",
+            game3Desc: "謎の放送局を展開する、雰囲気に満ちたミステリー探索。",
+            game4Desc: "ベイブレッド（Bey-Bread）の回転バトルが繰り広げられる、エネルギッシュでユニークなトーナメントゲーム！",
+            btnPlay: "プレイ",
+            titleGallery: "スクリーンショット",
+            noResults: "ゲームが見つかりません // 再検索してください",
+            footerAbout: "没入感のある世界観、ユーモア溢れるストーリー、そして記憶に残る探索体験を提供するインディーRPG＆ドット絵開発スペース。",
+            footerLinksTitle: "公式リンク",
+            footerItchDesc: "itch.ioまたはKo-fiでサポートやゲームダウンロードが可能です：",
+            footerCopyright: "© 2026 Beruang Games by @BeruangPixel. Pixel Art & Web Dev."
+        },
+        zh: {
+            headerSubtitle: "探索丰富的世界、幽默的对话与精彩的RPG冒险！点击即可在网页上直接游玩——支持PC与手机端！",
+            searchPlaceholder: "搜索游戏标题...",
+            titleLatestGames: "精选游戏",
+            game1Desc: "与朋友一起共度的欢快派对RPG，充满幽默互动与生动的探索。",
+            game2Desc: "包含迷人邂逅与巧妙对话的剧情导向冒险故事。",
+            game3Desc: "在神秘的广播电台揭开层层谜团的氛围感探索之旅。",
+            game4Desc: "一款充满活力与奇特风格的锦标赛游戏，体验旋转 Bey-Bread 的精彩对决！",
+            btnPlay: "立即游玩",
+            titleGallery: "游戏截图",
+            noResults: "未找到匹配的游戏 // 请重新搜索",
+            footerAbout: "致力于打造沉浸式世界、幽默剧情和难忘探索体验的独立RPG与像素艺术工作室。",
+            footerLinksTitle: "官方链接",
+            footerItchDesc: "在 itch.io 或 Ko-fi 上支持我的作品并下载游戏：",
+            footerCopyright: "© 2026 Beruang Games by @BeruangPixel. 像素艺术与网页开发者。"
+        },
+        es: {
+            headerSubtitle: "¡Explora mundos únicos, diálogos divertidos y grandes aventuras RPG! Haz clic y juega directamente en la web: ¡disponible para PC y móviles!",
+            searchPlaceholder: "Buscar títulos de juegos...",
+            titleLatestGames: "Juegos Destacados",
+            game1Desc: "Un divertido RPG de fiesta con amigos, interacciones graciosas y mucha exploración.",
+            game2Desc: "Una aventura narrativa encantadora repleta de encuentros únicos y diálogos ingeniosos.",
+            game3Desc: "Un misterio atmosférico donde los secretos se revelan en una extraña estación de radio.",
+            game4Desc: "¡Un juego de torneo enérgico y extravagante repleto de giratorias batallas de Bey-Bread!",
+            btnPlay: "Jugar",
+            titleGallery: "Capturas de Pantalla",
+            noResults: "JUEGO NO ENCONTRADO // INTENTA OTRA BÚSQUEDA",
+            footerAbout: "Un espacio de desarrollo de RPG indie y pixel art dedicated a crear mundos envolventes e historias llenas de humor.",
+            footerLinksTitle: "Enlaces Oficiales",
+            footerItchDesc: "Apoya mi trabajo y descarga los juegos en itch.io o Ko-fi:",
+            footerCopyright: "© 2026 Beruang Games por @BeruangPixel. Creador de Pixel Art y Desarrollador Web."
+        }
+    };
+
+    function setLanguage(lang) {
+        const t = translations[lang] || translations.en;
+        
+        document.getElementById('header-subtitle').innerText = t.headerSubtitle;
+        document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+        document.getElementById('title-latest-games').innerText = t.titleLatestGames;
+        document.getElementById('game1-desc').innerText = t.game1Desc;
+        document.getElementById('game2-desc').innerText = t.game2Desc;
+        document.getElementById('game3-desc').innerText = t.game3Desc;
+        document.getElementById('game4-desc').innerText = t.game4Desc;
+        
+        document.querySelectorAll('.btn-play-text').forEach(btn => btn.innerText = t.btnPlay);
+        
+        document.getElementById('title-gallery').innerText = t.titleGallery;
+        document.getElementById('noResults').innerText = t.noResults;
+        document.getElementById('footer-about').innerText = t.footerAbout;
+        document.getElementById('footer-links-title').innerText = t.footerLinksTitle;
+        document.getElementById('footer-itch-desc').innerText = t.footerItchDesc;
+        document.getElementById('footer-copyright').innerText = t.footerCopyright;
+        
+        document.getElementById('languageSelect').value = lang in translations ? lang : 'en';
+    }
+
+    function filterGames() {
+        const input = document.getElementById('searchInput').value.toLowerCase();
+        const cards = document.querySelectorAll('.game-card');
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const title = card.getAttribute('data-title').toLowerCase();
+            if (title.includes(input)) {
+                card.style.display = 'flex';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        const noResults = document.getElementById('noResults');
+        noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    function detectUserLanguage() {
+        const userLang = (navigator.language || navigator.userLanguage).substring(0, 2);
+        if (translations[userLang]) {
+            setLanguage(userLang);
+        } else {
+            setLanguage('en');
+        }
+    }
+
+    function changeLanguage(lang) {
+        setLanguage(lang);
+    }
+
+    /* SHUFFLE & RENDER SCREENSHOTS */
+    function setupScreenshots() {
+        const galleryGrid = document.getElementById('galleryGrid');
+        const images = Array.from(galleryGrid.querySelectorAll('img'));
+
+        // Acak urutan screenshot (Fisher-Yates Shuffle)
+        for (let i = images.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [images[i], images[j]] = [images[j], images[i]];
+        }
+
+        // Susun kembali gambar di DOM
+        galleryGrid.innerHTML = '';
+        images.forEach((img, index) => {
+            img.setAttribute('data-index', index);
+            img.onclick = () => openLightbox(index);
+            galleryGrid.appendChild(img);
+        });
+    }
+
+    /* LIGHTBOX / ZOOM SCREENSHOT LOGIC */
+    let currentImageIndex = 0;
+    const modal = document.getElementById('lightboxModal');
+    const modalImg = document.getElementById('lightboxImage');
+
+    function getGalleryImages() {
+        return document.querySelectorAll('.gallery-grid img');
+    }
+
+    function openLightbox(index) {
+        const images = getGalleryImages();
+        currentImageIndex = index;
+        modalImg.src = images[currentImageIndex].src;
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
+    function closeLightboxOnBg(e) {
+        if (e.target === modal) {
+            closeLightbox();
+        }
+    }
+
+    function changeImage(direction) {
+        const images = getGalleryImages();
+        currentImageIndex += direction;
+        
+        if (currentImageIndex < 0) {
+            currentImageIndex = images.length - 1;
+        } else if (currentImageIndex >= images.length) {
+            currentImageIndex = 0;
+        }
+        
+        modalImg.src = images[currentImageIndex].src;
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (!modal.classList.contains('active')) return;
+        
+        if (e.key === 'Escape') {
+            closeLightbox();
+        } else if (e.key === 'ArrowLeft') {
+            changeImage(-1);
+        } else if (e.key === 'ArrowRight') {
+            changeImage(1);
+        }
+    });
+
+    function shuffleFeaturedGames() {
+        const grid = document.getElementById('gameGrid');
+        const cards = Array.from(grid.querySelectorAll('.game-card'));
+        
+        for (let i = cards.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [cards[i], cards[j]] = [cards[j], cards[i]];
+        }
+        
+        const noResults = document.getElementById('noResults');
+        cards.forEach(card => grid.insertBefore(card, noResults));
+    }
+
+    window.onload = function() {
+        shuffleFeaturedGames();
+        setupScreenshots();
+        detectUserLanguage();
+    };
+</script>
+
+	<!-- Floating Pixel Widget -->
+    <a href="https://beruang-chat.vercel.app/" target="_blank" class="floating-pixel-btn" title="Visit Beruang Chat!">
+        <img src="Pixel Emotes Dance2.gif" alt="Beruang Chat AI" class="floating-pixel-img">
+        <span class="floating-pixel-tooltip">Visit Site! 🐻</span>
+    </a>
+
+    <!-- Monetag In-Page Push Tag -->
+    <script>(function(s){s.dataset.zone='11963674',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+
+    <!-- Monetag Vignette Banner Tag (Delayed 1 Minute) -->
+    <script>
+    setTimeout(function() {
+    (function(s){s.dataset.zone='11963675',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
+    }, 60000);
+
+</script>
+
+</body>
+</html>
